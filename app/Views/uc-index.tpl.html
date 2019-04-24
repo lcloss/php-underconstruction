@@ -1,0 +1,18 @@
+{% extends "templates/underconstruction.tpl.html" %}
+
+{% block body %}
+<p>Entretanto, você poderá saber antecipadamente quando o site estará no ar.<br>
+    Basta deixar o seu email que nós iremos lhe avisar.</p>
+<form class="form-row" method="POST" action="/">
+    <div class="col-9">
+    <div class="form-group">
+        <input class="form-control" type="email" name="email" id="email" placeholder="Endereço de email" />
+    </div>
+    </div>
+    <div class="col">
+    <button type="submit" class="btn btn-primary">Quero saber</button>
+    </div>
+</form>
+<br>
+<p>Caso queira enviar-nos uma mensagem, utilize o nosso formulário de <a href="/contacto">contato</a>.</p>
+{% endblock %}

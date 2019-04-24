@@ -1,4 +1,8 @@
-# Temporary files
+# Vendor files. Install with: $ composer update
+/vendor
+# Distribution files. These files are created on $ composer update
+/public/dist
+# Temporary files - where cache files are
 /temp
 # Log files
 /log

@@ -1,2 +1,10 @@
 <?php
-include_once('../templates/underconstruction.tpl.html');
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
+
+require '../vendor/autoload.php';
+
+require '../src/config/bootstrap.php';
+
+// Run app
+$app->run();

@@ -1,0 +1,13 @@
+@charset('utf-8');
+
+.code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8em;
+}
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+  
+    display: flex;
+    align-items: center;
+  }
