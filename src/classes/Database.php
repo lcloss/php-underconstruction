@@ -4,207 +4,96 @@ namespace App;
 
 class Database 
 {
-    private static $_instance = null;
-    private static $_conn;
-    private static $_settings = [];
-    private $_stmt;
-    
-    /**
-     * Must be an empty method as this class is a Singleton
-     */
-    public function __construct() {}
-    
-    public function __destruct() {}
-    
-    public function __clone() {}
-    
-    public function __wakeup() {}
-    
-    /**
-     * Create MySQL Connection through PDO
-     *
-     * @param array $_settings (database, hostname, username, password)
-     * @throws \Exception
-     */
-    public static function setConnection($settings):void
+    protected $conn;
+    protected $stmt;
+
+    public function __construct($conn)
     {
-        /* Only allow a new connection if I am not instantiate yet. */
-        if ( self::$_instance == null ) {
-            /* Assign database connection settings */
-            foreach ($settings as $key => $value) {
-                self::$_settings[$key] = $value;
-            }
-            
-            /* Create a new PDO connection */
-            try {
-                self::$_conn = new \PDO("mysql:dbname=" . self::$_settings['database'] .
-                    ";host=" . self::$_settings['hostname'] . ";charset=utf8",
-                    self::$_settings['username'] , self::$_settings['password']);
-            } catch (\PDOException $e) {
-                throw new \Exception($e->getMessage());
-            }
-            
-            self::$_instance = new Database();
-        }
-        
+        $this->conn = $conn;
     }
-    
-    /**
-     * Return PDO connection
-     *
-     * @return \PDO
-     */
-    public function getConnection(): \PDO
+
+    public function getLastInsertId()
     {
-        return self::$_conn;
+        return $this->conn->lastInsertId();
     }
-    
-    /**
-     * Get an Instance of myself
-     *
-     * @return \Core\Database
-     */
-    public static function getInstance(): \Core\Database
+
+    public function getRowsAffected()
     {
-        if ( self::$_instance == null ) {
-            self::$_instance = new Database();
-        }
-        
-        return self::$_instance;
+        return $this->stmt->rowCount();
     }
-    
-    /**
-     * Start a new transaction
-     */
-    public function beginTransaction(): void
+
+    public function beginTransaction()
     {
-        self::$_conn->beginTransaction();
+        $this->conn->beginTransaction();
     }
-    
-    /**
-     * Commit SQL changes
-     */
-    public function commit(): void
+
+    public function commit()
     {
-        self::$_conn->commit();
+        $this->conn->commit();
     }
-    
-    /**
-     * Rollback SQL changes
-     */
-    public function rollback(): void
+
+    public function rollback()
     {
-        self::$_conn->rollBack();
+        $this->conn->rollBack();
     }
-    
-    /**
-     * Execute SQL Statement
-     *
-     * @param string $sql
-     * @param array $parameters
-     * @throws \Exception
-     * @return boolean
-     */
-    public function execute(string $sql, array $parameters): bool
+
+    public function prepare($sql)
     {
-        $this->_stmt = self::$_conn->prepare($sql);
-        self::_setParams($parameters);
-        
-        $response = $this->_stmt->execute();
-        
-        if ( !$response ) {
-            throw new \Exception($this->printErrorInfo());
-        }
-        
-        return $response;
+        $this->stmt = $this->conn->prepare($sql);
     }
-    
-    /**
-     * Execute a SELECT statement and return rows
-     *
-     * @param string $sql
-     * @param array $parameters
-     * @throws \Exception
-     * @return array
-     */
-    public function select(string $sql, array $parameters): array
+
+    public function bindParam($key, $value)
     {
-        $response = self::execute($sql, $parameters);
-        
-        if ( !$response ) {
-            throw new \Exception($this->printErrorInfo());
-        }
-        
-        return $this->_stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $this->stmt->bindParam($key, $value);
     }
-    
-    public function selectOne(string $sql, array $parameters): array
+
+    public function bindParams($params)
     {
-        $response = self::execute($sql, $parameters);
-        
-        if ( !$response ) {
-            throw new \Exception($this->printErrorInfo());
-        }
-        
-        return $this->_stmt->fetch(\PDO::FETCH_ASSOC);
-    }
-    
-    /**
-     * Get last INSERT ID
-     *
-     * @return int
-     */
-    public function getLastInsertId(): int
-    {
-        return self::$_conn->lastInsertId();
-    }
-    
-    /**
-     * Get rows affected by last SQL
-     *
-     * @return int
-     */
-    public function getRowsAffected(): int
-    {
-        return $this->_stmt->rowCount();
-    }
-    
-    public function getErrorCode(): int
-    {
-        return self::$_conn->errorCode();
-    }
-    
-    public function getErrorInfo(): string
-    {
-        return self::$_conn->errorInfo();
-    }
-    
-    /**
-     * Set parameters to bind a SQL Statement
-     *
-     * @param array $parameters
-     */
-    private static function _setParams($parameters = array()): void
-    {
-        foreach ($parameters as $key => $value) {
-            self::$_instance->_bindParams($key, $value);
+        foreach($params as $key => $value) {
+            $this->bindParam($key, $value);
         }
     }
-    
-    /**
-     * Bind parameters to a SQL Statement
-     * @param $key
-     * @param $value
-     */
-    private function _bindParams($key, $value)
+
+    public function getErrorInfo()
     {
-        $this->_stmt->bindParam($key, $value);
+        $errors = $this->stmt->errorInfo();
+        return $errors[0] . ';' . $errors[1] . ';' . $errors[2];
     }
+
     
-    public function printErrorInfo(): string
+    public function execute($sql, $params = [])
     {
-        $error = $this->_stmt->errorInfo();
-        
-        return $error[0] . '; ' . $error[1] . '; ' . $error[2];
+        $this->prepare($sql);
+        $this->bindParams($params);
+
+        $result = $this->stmt->execute();
+
+        if ( !$result ) {
+            throw new \Exception($this->getErrorInfo());
+        }
+
+        return $result;
+    }
+
+    public function select($sql, $params)
+    {
+        $result = $this->execute($sql, $params);
+
+        if ( !$result ) {
+            return null;
+        }
+
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function selectRow($sql, $params)
+    {
+        $result = $this->execute($sql, $params);
+
+        if ( !$result ) {
+            return null;
+        }
+
+        return $this->stmt->fetch(\PDO::FETCH_ASSOC);
     }
 }

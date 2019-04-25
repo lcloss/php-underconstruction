@@ -1,6 +1,7 @@
 <?php
 
 use Slim\App;
+use App\Database;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -27,26 +28,26 @@ return function (App $app) {
         $logger = new \Monolog\Logger($settings['name']);
         $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
         $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
+
         return $logger;
     };
 
     // PDO Database handler
     $container['db'] = function ($c) {
-        $db = $c['settings']['db'];
-        $pdo = new PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'], $db['user'], $db['pass']);
+        $config = $c['settings']['db'];
+        try {
+            $pdo = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['pass']);
+        } catch (\PDOException $e) {
+            throw new \Exception($e->getMessage());
+        }
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        return $pdo;
+
+        $db = new Database($pdo);
+
+        return $db;
     };
 
     // Controllers
-    $container['HomeController'] = function($c) {
-        $view = $c->get("view");  // retrieve the 'view' from the container
-        return new \App\Http\Controllers\HomeController($view);
-    };
-
-    $container['AdminController'] = function($c) {
-        $view = $c->get("view");  // retrieve the 'view' from the container
-        return new \App\Http\Controllers\AdminController($view);
-    };    
+    require 'controllers.php';
 };

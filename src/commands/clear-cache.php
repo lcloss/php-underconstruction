@@ -1,6 +1,6 @@
 <?php
 // Include helpers
-include_once('core/helpers/system.helper.php');
+include_once('src/helpers/system.helper.php');
 
 /* Remove cache files */
 delTree('temp/cache');

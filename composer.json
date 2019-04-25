@@ -14,9 +14,9 @@
     },    
     "scripts": {
         "post-update-cmd": [
-            "php -f install/post-install.php"
+            "php -f src/commands/post-install.php"
         ],
-        "clearCache": "php -f install/clear-cache.php"
+        "clearCache": "php -f src/commands/clear-cache.php"
     },
     "require-dev": {
         "phpunit/phpunit": "6.4"

@@ -7,13 +7,17 @@ class HomeController extends Controller
 {
     public function index($request, $response, $args)
     {
-        $this->view->render($response, 'uc-index.tpl.html');
+        $data = [
+            'title' => getenv('TITLE', 'Underconstruction'),
+            'description' => getenv('DESCRIPTION', 'This website is underconstruction. Please, be patience.')
+        ];
+        $this->view->render($response, 'index.tpl.html', $data);
         return $response;
     }
 
     public function sentemail($request, $response, $args)
     {
-        $this->view->render($response, 'uc-thankyou.tpl.html');
+        $this->view->render($response, 'email-thankyou.tpl.html');
         return $response;
     }
 

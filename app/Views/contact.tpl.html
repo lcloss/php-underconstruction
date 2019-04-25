@@ -1,18 +1,24 @@
-{% extends "templates/underconstruction.tpl.html" %}
+{% extends "templates/app.tpl.html" %}
 
 {% block body %}
 <form method="post" action="/contacto">
-    <div class="form-group">
-        <label>Nome:</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Indique o seu nome" value="" />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Nome:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Indique o seu nome" value="" />
+        </div>
     </div>
-    <div class="form-group">
-        <label>Email:</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Indique o seu email" value="" />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Email:</label>
+        <div class="col-sm-10">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Indique o seu email" value="" />
+        </div>
     </div>
-    <div class="form-group">
-        <label>Assunto:</label>
-        <input type="text" class="form-control" id="subject" name="subject" placeholder="Indique o assunto da sua mensagem" value="" />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Assunto:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="subject" name="subject" placeholder="Indique o assunto da sua mensagem" value="" />
+        </div>
     </div>
     <div class="form-group">
         <label>Mensagem:</label>
