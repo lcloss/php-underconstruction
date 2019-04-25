@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require '../src/helpers/functions.helper.php';
+
 // Set up settings and Instantiate the app
 $settings = require 'settings.php';
 $app = new \Slim\App($settings);

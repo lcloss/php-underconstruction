@@ -5,7 +5,9 @@
         "twbs/bootstrap": "^4.3",
         "components/jquery": "^3.3.1",
         "vlucas/phpdotenv": "^3.3",
-        "monolog/monolog": "^1.17"
+        "monolog/monolog": "^1.17",
+        "slim/csrf": "^0.8.3",
+        "slim/flash": "^0.4.0"
     },
     "autoload": {
         "psr-4": {

@@ -4,14 +4,52 @@ namespace App;
 
 class Controller
 {
+    protected $c;
     protected $view;
+    protected $data = array();
+    protected $csrf;
+    protected $flash;
+    protected $db;
 
     /**
      * Instantiate Controller with Dependency Injection of $view
      */
-    public function __construct(\Slim\Views\Twig $view)
+    public function __construct(\Slim\Container $c)
     {
-        $this->view = $view;
+        $this->data = [
+            'title' => getenv('TITLE', 'Underconstruction'),
+            'description' => getenv('DESCRIPTION', 'This website is underconstruction. Please, be patience.')
+        ];
+
+        // Load dependencies
+        $this->c = $c;
+        $this->view = $c->get("view");
+        $this->csrf = $c->get("csrf");
+        $this->flash = $c->get("flash");
+        $this->db = $c->get("db");
+    }
+
+    public function getMessages()
+    {
+        // Check for errors
+        // Get flash messages from previous request
+        $messages = $this->flash->getMessages();
+
+        $errors = array();
+        $successes = array();
+        foreach ($messages as $key => $message) {
+            switch($key) {
+                case 'error':
+                    $errors[] = ['message' => $message[0]];
+                    break;
+
+                case 'success':
+                    $successes[] = ['message' => $message[0]];
+                    break;
+            }
+        }
+        $this->data['errors'] = $errors;
+        $this->data['successes'] = $successes;
     }
 
     /*

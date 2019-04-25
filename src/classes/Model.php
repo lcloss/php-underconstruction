@@ -9,12 +9,14 @@ class Model
     protected $db;
     protected $table;
     protected $columns;
+    protected $flash;
 
-    public function __construct($db, $table)
+    public function __construct($db, $table, $flash)
     {
         $this->db = $db;
         $this->table = $table;
         $this->columns = array();
+        $this->flash = $flash;
     }
 
     public function isColumn($key)

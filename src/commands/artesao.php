@@ -66,7 +66,8 @@ switch( $argv[1] ) {
         }
 
         echo "A criar a tabela " . $argv[2] . "\n\r";
-        $table = new \App\MakeTable($argv[2]);
+        $c = $app->getContainer();
+        $table = new \App\MakeTable($c->db, $argv[2]);
         $table->create();
         echo "Tabela criada. Altere e execute make:table " . $argv[2];
         break;

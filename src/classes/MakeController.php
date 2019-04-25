@@ -7,8 +7,7 @@ class MakeController
     protected $controllername = '';
     protected $controller_item = <<<'EOT'
     $container['{% controllername %}Controller'] = function($c) {
-        $view = $c->get("view");  // retrieve the 'view' from the container
-        return new \App\Http\Controllers\{% controllername %}Controller($view);
+        return new \App\Http\Controllers\{% controllername %}Controller($c);
     };    
 
 

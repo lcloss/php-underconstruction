@@ -12,6 +12,8 @@
     <div class="col">
     <button type="submit" class="btn btn-primary">Quero saber</button>
     </div>
+    <input type="hidden" name="{{ csrf_nameKey }}" value="{{ csrf_nameData }}">
+    <input type="hidden" name="{{ csrf_valueKey }}" value="{{ csrf_valueData }}">
 </form>
 <br>
 <p>Caso queira enviar-nos uma mensagem, utilize o nosso formulário de <a href="/contacto">contato</a>.</p>

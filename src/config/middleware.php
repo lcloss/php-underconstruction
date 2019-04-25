@@ -3,5 +3,6 @@
 use Slim\App;
 
 return function (App $app) {
-    // e.g: $app->add(new \Slim\Csrf\Guard);
+    // Csrf protection
+    $app->add(new \Slim\Csrf\Guard);
 };

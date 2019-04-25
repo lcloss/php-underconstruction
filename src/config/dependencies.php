@@ -48,6 +48,16 @@ return function (App $app) {
         return $db;
     };
 
+    // CSRF 
+    $container['csrf'] = function ($c) {
+        return new \Slim\Csrf\Guard();
+    };
+
+    // Flash Messages
+    $container['flash'] = function ($c) {
+        return new \Slim\Flash\Messages();
+    };
+    
     // Controllers
     require 'controllers.php';
 };
