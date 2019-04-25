@@ -29,6 +29,15 @@ class Controller
         $this->db = $c->get("db");
     }
 
+    public function setCsrf($request)
+    {
+        // CSRF token name and value
+        $this->data['csrf_nameKey'] = $this->csrf->getTokenNameKey();
+        $this->data['csrf_valueKey'] = $this->csrf->getTokenValueKey();
+        $this->data['csrf_nameData'] = $request->getAttribute($this->data['csrf_nameKey']);
+        $this->data['csrf_valueData'] = $request->getAttribute($this->data['csrf_valueKey']);
+    }
+
     public function getMessages()
     {
         // Check for errors

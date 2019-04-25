@@ -6,8 +6,8 @@ class {% tablename %}Table extends \App\MakeTable
 {
    protected $table = '{% tablename %}';
 
-   public function __construct($db) {
-        parent::__construct($db);
+   public function __construct($db, $flash) {
+        parent::__construct($db, $this->table, $flash);
 
         $this->columns = [
             'id'        => 'INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY',

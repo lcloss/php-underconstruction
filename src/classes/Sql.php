@@ -23,7 +23,7 @@ class Sql
         $this->_statement .= ' ' . $statement;
     }
     
-    public function select(array $columns, string $alias = ''): \Core\Sql
+    public function select(array $columns, string $alias = ''): \App\Sql
     {
         $sql = "SELECT " . implode(", ", self::quote($columns, $alias));
         
@@ -36,7 +36,7 @@ class Sql
         return $this;
     }
     
-    public function selectRaw(string $select, string $alias = ''): \Core\Sql
+    public function selectRaw(string $select, string $alias = ''): \App\Sql
     {
         $sql = "SELECT " . $select;
         
@@ -49,7 +49,7 @@ class Sql
         return $this;
     }
     
-    public function count(): \Core\Sql
+    public function count(): \App\Sql
     {
         $sql = "SELECT COALESCE(COUNT(*), 0) AS numrows";
         
@@ -62,7 +62,7 @@ class Sql
         return $this;
     }
     
-    public function insert(array $columns): \Core\Sql
+    public function insert(array $columns): \App\Sql
     {
         $sql = "INSERT INTO " . $this->_table . " (" . implode(", ", self::quote($columns)) . ") VALUES (" . implode(", ", self::prepare($columns)) . ")";
         
@@ -71,7 +71,7 @@ class Sql
         return $this;
     }
     
-    public function update(array $columns): \Core\Sql
+    public function update(array $columns): \App\Sql
     {
         $sql = "UPDATE " . $this->_table . " SET ";
         
@@ -87,7 +87,7 @@ class Sql
         return $this;
     }
     
-    public function delete(): \Core\Sql
+    public function delete(): \App\Sql
     {
         $sql = "DELETE FROM " . $this->_table;
         
@@ -96,7 +96,7 @@ class Sql
         return $this;
     }
     
-    public function join(string $table, array $compare, string $alias1 = '', string $alias2 = ''): \Core\Sql
+    public function join(string $table, array $compare, string $alias1 = '', string $alias2 = ''): \App\Sql
     {
         $sql = "INNER JOIN " . $table . ( $alias1 != '' ? " " . $alias1 : "" );
         $sql .= " ON " . implode(" AND ", self::compare($compare, $alias1, $alias2));
@@ -180,7 +180,7 @@ class Sql
         return $compare_arr;
     }
     
-    public function from(string $table, string $alias = ''): \Core\Sql
+    public function from(string $table, string $alias = ''): \App\Sql
     {
         $sql = "FROM " . $table . ( $alias != '' ? " " . $alias : "");
         
@@ -189,7 +189,7 @@ class Sql
         return $this;
     }
     
-    public function where(array $where, $alias = ''): \Core\Sql
+    public function where(array $where, $alias = ''): \App\Sql
     {
         if ( 0 === count($where) ) {
             return $this;
@@ -211,7 +211,7 @@ class Sql
         return $this;
     }
     
-    public function whereCond(string $where): \Core\Sql
+    public function whereCond(string $where): \App\Sql
     {
         if ( $where == '' ) {
             return $this;
@@ -224,7 +224,7 @@ class Sql
         return $this;
     }
     
-    public function orderby(array $columns): \Core\Sql
+    public function orderby(array $columns): \App\Sql
     {
         if ( 0 === count($columns) ) {
             return $this;
@@ -243,7 +243,7 @@ class Sql
         return $this;
     }
     
-    public function groupby(array $columns): \Core\Sql
+    public function groupby(array $columns): \App\Sql
     {
         if ( 0 === count($columns) ) {
             return $this;

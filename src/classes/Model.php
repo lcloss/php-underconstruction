@@ -3,12 +3,14 @@
 namespace App;
 
 use App\Database;
+use App\Sql;
 
 class Model
 {
     protected $db;
     protected $table;
     protected $columns;
+    protected $sql;
     protected $flash;
 
     public function __construct($db, $table, $flash)
@@ -16,12 +18,13 @@ class Model
         $this->db = $db;
         $this->table = $table;
         $this->columns = array();
+        $this->sql = new Sql($this->table);
         $this->flash = $flash;
     }
 
     public function isColumn($key)
     {
-        return ( array_key_exists( $this->columns, $key ) ? true : false );
+        return ( array_key_exists( $key, $this->columns ) ? true : false );
     }
 
     /**
@@ -39,7 +42,7 @@ class Model
             throw new \Exception('Invalid column name: ' . $column);
         }
 
-        if ( !preg_match('/[a-zA-Z0-9_]', $column) ) {
+        if ( !preg_match('/[a-zA-Z0-9_]/', $column) ) {
             throw new \Exception('Invalid column name: ' . $column);
         }
 
@@ -54,7 +57,7 @@ class Model
                 break;
 
             default:
-                throw new \Excetion('Invalid request for ' . $name);
+                throw new \Exception('Invalid request for ' . $name);
                 break;
         }
     }

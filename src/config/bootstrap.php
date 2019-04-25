@@ -1,20 +1,21 @@
 <?php
 session_start();
+$s = DIRECTORY_SEPARATOR;
 
-require '../src/helpers/functions.helper.php';
+require __DIR__ . $s . '..' . $s . 'helpers' . $s . 'functions.helper.php';
 
 // Set up settings and Instantiate the app
-$settings = require 'settings.php';
+$settings = require __DIR__ . $s . 'settings.php';
 $app = new \Slim\App($settings);
 
 // Set up dependencies
-$dependencies = require 'dependencies.php';
+$dependencies = require __DIR__ . $s . 'dependencies.php';
 $dependencies($app);
 
 // Register middleware
-$middleware = require 'middleware.php';
+$middleware = require __DIR__ . $s . 'middleware.php';
 $middleware($app);
 
 // Register routes
-$routes = require 'routes.php';
+$routes = require __DIR__ . $s . 'routes.php';
 $routes($app);

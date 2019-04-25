@@ -29,12 +29,14 @@ EOT;
     protected $db;
     protected $seed = array();
 
-    public function __construct($db, $table) {
+    public function __construct($db, $table) 
+    {
         $this->db = $db;
         $this->table = $table;
     }
 
-    public function create() {
+    public function create() 
+    {
         // Table definition and seed
         $make_tpl = file_get_contents('src/commands/templates/make-table.tpl');
         $make_tpl = str_replace('{% tablename %}', $this->table, $make_tpl);
@@ -46,7 +48,8 @@ EOT;
         file_put_contents('app/Models/' . $this->table . 'Model.php', $make_tpl);
     }
 
-    public function make() {
+    public function make() 
+    {
         $sql_columns = "";
         foreach($this->columns as $column => $prop) {
             if ( !empty($sql_columns) ) {
@@ -62,12 +65,23 @@ EOT;
         // echo $sql;
     }
 
-    public function drop() {
+    public function drop() 
+    {
         $sql = str_replace('{% tablename %}', strtolower($this->table), $this->sql_drop);
         $this->db->execute($sql);
     }
 
-    public function seed() {
+    public function remove() 
+    {
+        // Table definition and seed
+        unlink('app/Db/' . $this->table . 'Table.php');
+        
+        // Table model
+        unlink('app/Models/' . $this->table . 'Model.php');
+    }
+
+    public function seed() 
+    {
         foreach ($this->seed as $row) {
             $sql_columns = "";
             $sql_values = "";

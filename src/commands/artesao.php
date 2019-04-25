@@ -17,7 +17,8 @@ switch( $argv[1] ) {
             'create:table <table>',
             'make:table <table>',
             'seed:table <table>',
-            'drop:table <table>'
+            'drop:table <table>',
+            'remove:table <table>'
         );
     
         echo "Lista de comandos disponíveis:\n\r\n\r";
@@ -97,6 +98,15 @@ switch( $argv[1] ) {
         $table = new $classname($c->db);
         $table->drop();
         echo "Tabela " . $argv[2] . " eliminada.";
+        break;
+
+    case 'remove:table':
+        echo "A eliminar a tabela " . $argv[2] . " do sistema.\n\r";
+        $classname = '\\App\\Db\\' . $argv[2] . 'Table';
+        $c = $app->getContainer();
+        $table = new $classname($c->db);
+        $table->remove();
+        echo "Tabela " . $argv[2] . " removida.";
         break;
 
     default:
