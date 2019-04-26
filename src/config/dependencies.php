@@ -36,7 +36,7 @@ return function (App $app) {
     $container['db'] = function ($c) {
         $config = $c['settings']['db'];
         try {
-            $pdo = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['pass']);
+            $pdo = new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['pass']);
         } catch (\PDOException $e) {
             throw new \Exception($e->getMessage());
         }

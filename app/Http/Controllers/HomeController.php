@@ -43,20 +43,20 @@ class HomeController extends Controller
         $subject = "Novo pedido para aviso de abertura de site";
         $message = <<<'EOT'
         Olá {% admin %}!
-
+        
         Um novo visitante solicitou que seja avisado quando o site estiver no ar.
         O endereço de email para envio é:
-
-        {% email %}
-
+        
+        <a href="mailto:{% email %}">{% email %}</a>
+        
         Por favor, assim que o site estiver no ar, envie um email notificando este visitante.
         Até já!
-
+        
 EOT;
         $message = str_replace('{% admin %}', getenv('ADMIN_NAME'), $message);
         $message = str_replace('{% email %}', $post['email'], $message);
 
-        $success = Mail::send(getenv('FROM_EMAIL'), $to, $subject, $message, getenv('SITE_NAME'));
+        $success = Mail::send(getenv('FROM_EMAIL'), $to, $subject, nl2br($message), getenv('SITE_NAME'));
         if ( !$success ) {
             $error_msg = error_get_last()['message'];
 
@@ -69,15 +69,15 @@ EOT;
         $subject = "Solicitação de aviso de abertura do site " . getenv('SITE_NAME');
         $message = <<<'EOT'
         Olá!
-
-        Você ou alguém visitou o site {% site_name %} ({% site_url %}) e pediu para ser avisado quando o 
+        
+        Você ou alguém visitou o site <a href="{% site_url %}">{% site_name %}</a> (<a href="{% site_url %}">{% site_url %}</a>) e pediu para ser avisado quando o 
         site estiver no ar.
-
+        
         Não se preocupe! Nós iremos lhe avisar.
-
-        Se por acaso não fez tal solicitação, por favor avise-nos pelo email {% notify_email %},
-        ou entre em contato connosco aqui: {% site_url %}/contacto
-
+        
+        Se por acaso não fez tal solicitação, por favor avise-nos pelo email <a href="mailto:{% notify_email %}">{% notify_email %}</a>,
+        ou entre em contato connosco aqui: <a href="{% site_url %}/contacto">{% site_url %}/contacto</a>
+        
         Obrigado e até já!
         
 EOT;
@@ -85,7 +85,7 @@ EOT;
         $message = str_replace('{% site_url %}', getenv('SITE_URL'), $message);
         $message = str_replace('{% notify_email %}', getenv('ADMIN_EMAIL'), $message);
 
-        $success = Mail::send(getenv('FROM_EMAIL'), $to, $subject, $message, getenv('SITE_NAME'));
+        $success = Mail::send(getenv('FROM_EMAIL'), $to, $subject, nl2br($message), getenv('SITE_NAME'));
         if ( !$success ) {
             $this->flash->addMessage('error', error_get_last()['message']);
             return $response->withRedirect('/');
@@ -148,7 +148,7 @@ EOT;
         $subject = $post['subject'];
         $message = $post['message'];
 
-        $success = Mail::send($post['email'], $to, $post['subject'], $post['message'], $post['name']);
+        $success = Mail::send($post['email'], $to, $post['subject'], nl2br($post['message']), $post['name']);
         if ( !$success ) {
             $error_msg = error_get_last()['message'];
 
