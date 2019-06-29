@@ -1,6 +1,7 @@
 <?php
 if ( count($argv) < 2 ) {
-    echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao <comando> [<parametros>] \n\r";
+    echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao <comando> [<parametros>] \n\r\n\r";
+    echo "Para uma lista dos comandos, digite: \n\r\n\r$ php artesao list\n\r";
     exit(0);
 }
 
@@ -12,7 +13,7 @@ switch( $argv[1] ) {
         $available_cmds = array(
             'list',
             'create:controller <controller>',
-            'drop:controller <controller>',
+            'delete:controller <controller>',
             'create:middleware <middleware>',
             'create:table <table>',
             'make:table <table>',
@@ -36,10 +37,12 @@ switch( $argv[1] ) {
         echo "A criar o controller " . $argv[2] . "\n\r";
         $controller = new \App\MakeController($argv[2]);
         $controller->create();
-        echo "Controller " . $argv[2] . " criado. Crie agora os templates em app/Views/" . strtolower($argv[2]) . "/\n\r";
+        echo "Controller " . $argv[2] . " criado.\n\r\n\r";
+        echo "Crie agora os templates em app/Views/" . strtolower($argv[2]) . "/\n\r";
+        echo "Crie também uma entrada em src/config/routes.php\n\r";
         break;
 
-    case 'drop:controller':
+    case 'delete:controller':
         if ( count($argv) < 3 ) {
             echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao " . $argv[1] . " <controller> \n\r";
             exit(0);

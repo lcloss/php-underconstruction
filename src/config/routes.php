@@ -14,7 +14,11 @@ return function (App $app) {
     $app->post('/contacto', \HomeController::class . ':sentcontact');
 
     // Admin Controller
-    $app->get('/admin', \AdminController::class . ':index');
+    // $admin_controller_path = PATH_SEPARATOR . "app" . PATH_SEPARATOR . "Http" . PATH_SEPARATOR . "Controllers" . PATH_SEPARATOR;
+    $controllers_path = "app/Http/Controllers/";
+    if (file_exists($controllers_path . "AdminController.php")) {
+        $app->get('/admin', \AdminController::class . ':index');
+    }
 
     // Misc
     $app->get('/hello/{name}', function ($request, $response, $args) {

@@ -148,12 +148,10 @@ EOT;
         $subject = $post['subject'];
         $message = $post['message'];
 
-        $success = Mail::send($post['email'], $to, $post['subject'], nl2br($post['message']), $post['name']);
+        $success = Mail::send($post['email'], $to, $subject, nl2br($message), $post['name']);
         if ( !$success ) {
-            $error_msg = error_get_last()['message'];
-
             $this->flash->addMessage('error', error_get_last()['message']);
-            return $response->withRedirect('/');
+            return $response->withRedirect('/contacto');
         }
 
         // Add to database
