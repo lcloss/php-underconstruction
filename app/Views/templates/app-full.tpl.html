@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>{{ title }}</title>
+      <meta name="description" content="{{ description }}">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- Bootstrap -->
+      <link rel="stylesheet" href="dist/bootstrap/css/bootstrap.min.css">
+      <!-- Estilos -->
+      <link rel="stylesheet" href="css/estilos.css">
+      <style>
+      </style>
+  </head>
+  <body>
+    <div class="container-fluid full-height w-100 m-0 p-0">
+        <div class="row h-100 p-0">
+          <div class="col-md-6 color-gray">
+              <div class="main-box">
+            <h1>Estamos Construindo<br>um Novo Site</h1>
+            <br>
+            {% if errors %}
+            <div class="alert alert-danger">
+                {% for error in errors %}
+                {{ error.message }}<br>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if successes %}
+            <div class="alert alert-success">
+                {% for success in successes %}
+                {{ success.message }}<br>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% block body %}{% endblock %}
+            </div>
+          </div>
+          <div class="col-md-6 img-box">&nbsp;
+          </div>
+        </div>
+    </div>
+  </body> 
+</html> 

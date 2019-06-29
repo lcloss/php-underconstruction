@@ -1,8 +1,33 @@
 @charset('utf-8');
-
+html {
+    padding: 0px;
+    height: 100%;
+}
+body {
+    height: 100%;
+    width: 99.1%;
+}
 .code {
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.8em;
+}
+.main-box {
+    max-width: 70%;
+    float: right;
+    margin-top: 25%;
+    margin-bottom: 0px;
+    padding: 0px 20px 0px 20px;
+}
+.color-gray {
+    background-color: #e6e6e6;
+}
+.full-height {
+    height: 100%;
+}
+.img-box {
+    background-image: url('/images/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
