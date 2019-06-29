@@ -34,7 +34,7 @@ entrada nos controladores da app, em ```src/config/controllers.php```.
 
 Para apagar um Controller, faça:
 ```bash
-php artesao drop:controller Admin
+php artesao delete:controller Admin
 ```
 
 ## Criando Tabelas

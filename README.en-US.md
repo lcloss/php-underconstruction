@@ -34,7 +34,7 @@ on app controllers, on ```src/config/controllers.php```.
 
 To delete a Controller, do:
 ```bash
-php artesao drop:controller Admin
+php artesao delete:controller Admin
 ```
 
 ## Creating tables
