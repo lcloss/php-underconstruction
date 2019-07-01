@@ -19,7 +19,8 @@ switch( $argv[1] ) {
             'make:table <table>',
             'seed:table <table>',
             'drop:table <table>',
-            'remove:table <table>'
+            'remove:table <table>',
+            'update:domain <domain> <user> <dbname> <dbpassw>',
         );
     
         echo "Lista de comandos disponíveis:\n\r\n\r";
@@ -29,7 +30,7 @@ switch( $argv[1] ) {
         break;
 
     case 'create:controller':
-        if ( count($argv) < 3 ) {
+        if ( count($argv) != 3 ) {
             echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao " . $argv[1] . " <controller> \n\r";
             exit(0);
         }
@@ -110,6 +111,18 @@ switch( $argv[1] ) {
         $table = new $classname($c->db);
         $table->remove();
         echo "Tabela " . $argv[2] . " removida.";
+        break;
+
+    case 'update:domain':
+        if ( count($argv) != 9 ) {
+            echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao " . $argv[1] . " <domain> <user> <email> <password> <dbname> <dbuser> <dbpasswd>\n\r";
+            exit(0);
+        }
+        $domain = new \App\UpdateEnv($argv[2], $argv[3], $argv[4], $argv[5], $argv[6], $argv[7], $argv[8]);
+        $domain->updateDomain($argv[2], true);
+        $domain->update();
+        echo "Domínio " . $argv[2] . " atualizado.\n\r\n\r";
+        echo "Verifique agora o ficheiro .env\n\r";
         break;
 
     default:
