@@ -43,7 +43,7 @@ class UpdateEnv
         $make_tpl = preg_replace('/ADMIN_EMAIL="(.*)"/', 'ADMIN_EMAIL="' . $this->email . '"', $make_tpl);
         $make_tpl = preg_replace('/FROM_EMAIL="(.*)"/', 'FROM_EMAIL="' . $this->email . '"', $make_tpl);
         $make_tpl = preg_replace('/REPLY_TO="(.*)"/', 'REPLY_TO="' . $this->email . '"', $make_tpl);
-        $make_tpl = preg_replace('/DB_USER="(.*)"/', 'DB_USER="' . $this->user . '_' . $this->dbname . '"', $make_tpl);
+        $make_tpl = preg_replace('/DB_USER="(.*)"/', 'DB_USER="' . $this->user . '_' . $this->dbuser . '"', $make_tpl);
         $make_tpl = preg_replace('/DB_PASS="(.*)"/', 'DB_PASS="' . $this->dbpass . '"', $make_tpl);
         $make_tpl = preg_replace('/DB_NAME="(.*)"/', 'DB_NAME="' . $this->user . '_' . $this->dbname . '"', $make_tpl);
         $make_tpl = preg_replace('/MAIL_HOST="(.*)"/', 'MAIL_HOST="mail.' . $this->domain . '"', $make_tpl);
