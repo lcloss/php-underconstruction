@@ -8,7 +8,7 @@ return function (App $app) {
 
     // Twig Viewer
     $container['view'] = function ($c) {
-        $view = new \Slim\Views\Twig('../app/views', [
+        $view = new \Slim\Views\Twig('../app/Views', [
             // 'cache' => '../temp/cache'
             'cache' => false,
             'debug' => true,
