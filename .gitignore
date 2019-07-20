@@ -11,3 +11,6 @@
 /log
 # Environment file
 .env
+# Shell scripts
+update-domain.sh
+create-db.sql

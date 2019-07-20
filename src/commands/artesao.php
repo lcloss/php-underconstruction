@@ -118,7 +118,7 @@ switch( $argv[1] ) {
             echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao " . $argv[1] . " <domain> <user> <email> <password> <dbname> <dbuser> <dbpasswd>\n\r";
             exit(0);
         }
-        $domain = new \App\UpdateEnv($argv[2], $argv[3], $argv[4], $argv[5], $argv[6], $argv[7], $argv[8]);
+        $domain = new \App\UpdateEnv($argv[2], $argv[3], $argv[4], $argv[5], $argv[6], $argv[7], $argv[8]); 
         $domain->updateDomain($argv[2], true);
         $domain->update();
         echo "Domínio " . $argv[2] . " atualizado.\n\r\n\r";
