@@ -15,14 +15,19 @@ class ContactsModel extends Model
 
     public function addContact($contact)
     {
+        $contact['sent_time'] = date("Y-m-d H:i:s");
+        $contact['ip_address'] = get_ip();
+
         $this->setValues($contact);
 
-        $sql = $this->sql->insert(['name', 'email', 'subject', 'message'])->get();
+        $sql = $this->sql->insert(['name', 'email', 'subject', 'message', 'sent_time', 'ip_address'])->get();
         $values = $this->sql->values([
-            'name'  => $this->getname(),
-            'email' => $this->getemail(),
-            'subject'   => $this->getsubject(),
-            'message'   => $this->getmessage()
+            'name'          => $this->getname(),
+            'email'         => $this->getemail(),
+            'subject'       => $this->getsubject(),
+            'message'       => $this->getmessage(),
+            'sent_time'     => $this->getsent_time(),
+            'ip_address'    => $this->getip_address()
         ]);
         
         $this->execute($sql, $values);
