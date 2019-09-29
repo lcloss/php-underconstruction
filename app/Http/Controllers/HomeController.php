@@ -115,7 +115,7 @@ EOT;
             return $response->withRedirect('/');
         }
         
-        $tb_notifiers->addNotifier($post['e_mail']);
+        $tb_notifiers->addNotifier($post);
 
         $this->getMessages();
 
