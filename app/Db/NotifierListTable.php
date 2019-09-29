@@ -10,8 +10,11 @@ class NotifierListTable extends \App\MakeTable
         parent::__construct($db, $this->table);
 
         $this->columns = [
-            'id'        => 'INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY',
-            'email'     => 'VARCHAR(150) NOT NULL'
+            'id'            => 'INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY',
+            'name'          => 'VARCHAR(50) NOT NULL',
+            'email'         => 'VARCHAR(120) NOT NULL',
+            'sent_time'     => 'TIMESTAMP NOT NULL',
+            'ip_address'    => 'VARCHAR(32) NULL'
         ];
 
         $this->seed = [
