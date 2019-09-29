@@ -6,11 +6,11 @@ class {% tablename %}Table extends \App\MakeTable
 {
    protected $table = '{% tablename %}';
 
-   public function __construct($db, $flash) {
-        parent::__construct($db, $this->table, $flash);
+   public function __construct($db) {
+        parent::__construct($db, $this->table);
 
         $this->columns = [
-            'id'        => 'INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY',
+            'id'        => 'INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY',
             'column1'   => 'VARCHAR(10) NOT NULL',
             'column2'   => 'VARCHAR(10) NOT NULL',
         ];

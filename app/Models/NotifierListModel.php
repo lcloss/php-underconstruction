@@ -41,6 +41,7 @@ class NotifierListModel extends Model
             return false;
         }
     }
+
     public function addNotifier($email)
     {
         if ( $this->checkEmail($email) ) {
@@ -50,7 +51,10 @@ class NotifierListModel extends Model
 
             $sql = $this->sql->insert(['email'])->get();
             $values = $this->sql->values([
-                'email' => $this->getemail()
+                'name'          => $this->getname(),
+                'email'         => $this->getemail(),
+                'sent_time'     => date("Y-m-d H:i:s"),
+                'ip_address'    => get_ip()
             ]);
             
             $this->execute($sql, $values);

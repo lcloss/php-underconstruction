@@ -113,6 +113,15 @@ switch( $argv[1] ) {
         echo "Tabela " . $argv[2] . " removida.";
         break;
 
+    case 'update:table':
+        echo "A alterar a tabela " . $argv[2] . " do sistema.\n\r";
+        $classname = '\\App\\Db\\' . $argv[2] . 'Table';
+        $c = $app->getContainer();
+        $table = new $classname($c->db);
+        $table->update();
+        echo "Tabela " . $argv[2] . " atualizada.";
+        break;
+
     case 'update:domain':
         if ( count($argv) != 9 ) {
             echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao " . $argv[1] . " <domain> <user> <email> <password> <dbname> <dbuser> <dbpasswd>\n\r";

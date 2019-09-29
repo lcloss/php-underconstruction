@@ -5,6 +5,7 @@ use App\Controller;
 use App\Mail;
 use App\Models\NotifierListModel;
 use App\Models\ContactsModel;
+use App\Models\SpammersModel;
 
 class HomeController extends Controller
 {
@@ -12,6 +13,8 @@ class HomeController extends Controller
     {
         $this->setCsrf($request);
         $this->getMessages();
+
+        $this->data['google_recaptcha'] = getenv('GOOGLE_RECAPTCHA');
 
         $this->view->render($response, 'index.tpl.html', $this->data);
         return $response;
@@ -22,18 +25,39 @@ class HomeController extends Controller
         $post = $request->getParsedBody();
 
         // Validations
-        if ( empty($post['email']) ) {
+        $tb_spammers = New SpammersModel($this->db, $this->flash);
+
+        // Anti-spam!!!
+        if ( !empty($post['email'])) {
+            if ( !$tb_spammers->checkSpammer() ) {
+                $tb_spammers->addSpammer();
+            }
+
+            return $response->withRedirect('/');
+        }
+
+        // Check ip address
+        if ( $tb_spammers->checkSpammer() ) {
+            return $response->withRedirect('/');
+        }
+
+        if ( empty($post['name']) ) {
+            $this->flash->addMessage('error', 'Nome não pode estar vazio.');
+            return $response->withRedirect('/');
+        }
+
+        if ( empty($post['e_mail']) ) {
             $this->flash->addMessage('error', 'Email não pode estar vazio.');
             return $response->withRedirect('/');
         }
 
-        if ( !filter_var($post['email'], FILTER_VALIDATE_EMAIL) ) {
+        if ( !filter_var($post['e_mail'], FILTER_VALIDATE_EMAIL) ) {
             $this->flash->addMessage('error', 'Email não tem formato válido.');
             return $response->withRedirect('/');
         }
 
         $tb_notifiers = New NotifierListModel($this->db, $this->flash);
-        if ( $tb_notifiers->checkEmail($post['email']) ) {
+        if ( $tb_notifiers->checkEmail($post['e_mail']) ) {
             $this->flash->addMessage('error', 'Email já cadastrado.');
             return $response->withRedirect('/');
         }
@@ -54,7 +78,7 @@ class HomeController extends Controller
         
 EOT;
         $message = str_replace('{% admin %}', getenv('ADMIN_NAME'), $message);
-        $message = str_replace('{% email %}', $post['email'], $message);
+        $message = str_replace('{% email %}', $post['e_mail'], $message);
 
         $success = Mail::send(getenv('FROM_EMAIL'), $to, $subject, nl2br($message), getenv('SITE_NAME'));
         if ( !$success ) {
@@ -65,7 +89,7 @@ EOT;
         }
 
         // Sent email to the visitor
-        $to = $post['email'];
+        $to = $post['e_mail'];
         $subject = "Solicitação de aviso de abertura do site " . getenv('SITE_NAME');
         $message = <<<'EOT'
         Olá!
@@ -91,7 +115,7 @@ EOT;
             return $response->withRedirect('/');
         }
         
-        $tb_notifiers->addNotifier($post['email']);
+        $tb_notifiers->addNotifier($post['e_mail']);
 
         $this->getMessages();
 
@@ -104,6 +128,8 @@ EOT;
         $this->setCsrf($request);
         $this->getMessages();
 
+        $this->data['google_recaptcha'] = getenv('GOOGLE_RECAPTCHA');
+
         $this->view->render($response, 'contact.tpl.html', $this->data);
         return $response;
     }
@@ -114,12 +140,28 @@ EOT;
         $is_error = False;
 
         // Validations
+        $tb_spammers = New SpammersModel($this->db, $this->flash);
+
+        // Anti-spam!!!
+        if ( !empty($post['email'])) {
+            if ( !$tb_spammers->checkSpammer() ) {
+                $tb_spammers->addSpammer();
+            }
+
+            return $response->withRedirect('/');
+        }
+
+        // Check ip address
+        if ( $tb_spammers->checkSpammer() ) {
+            return $response->withRedirect('/');
+        }
+
         if ( empty($post['name']) ) {
             $this->flash->addMessage('error', 'Nome não pode estar vazio.');
             $is_error = True;
         }
 
-        if ( empty($post['email']) ) {
+        if ( empty($post['e_mail']) ) {
             $this->flash->addMessage('error', 'Email não pode estar vazio.');
             $is_error = True;
         }
@@ -138,7 +180,7 @@ EOT;
             return $response->withRedirect('/contacto');
         }
 
-        if ( !filter_var($post['email'], FILTER_VALIDATE_EMAIL) ) {
+        if ( !filter_var($post['e_mail'], FILTER_VALIDATE_EMAIL) ) {
             $this->flash->addMessage('error', 'Email não tem formato válido.');
             return $response->withRedirect('/contacto');
         }
@@ -148,7 +190,7 @@ EOT;
         $subject = $post['subject'];
         $message = $post['message'];
 
-        $success = Mail::send($post['email'], $to, $subject, nl2br($message), $post['name']);
+        $success = Mail::send($post['e_mail'], $to, $subject, nl2br($message), $post['name']);
         if ( !$success ) {
             $this->flash->addMessage('error', error_get_last()['message']);
             return $response->withRedirect('/contacto');

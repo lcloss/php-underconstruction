@@ -19,10 +19,12 @@ class ContactsModel extends Model
 
         $sql = $this->sql->insert(['name', 'email', 'subject', 'message'])->get();
         $values = $this->sql->values([
-            'name'  => $this->getname(),
-            'email' => $this->getemail(),
-            'subject'   => $this->getsubject(),
-            'message'   => $this->getmessage()
+            'name'          => $this->getname(),
+            'email'         => $this->getemail(),
+            'subject'       => $this->getsubject(),
+            'message'       => $this->getmessage(),
+            'sent_time'     => date("Y-m-d H:i:s"),
+            'ip_address'    => get_ip()
         ]);
         
         $this->execute($sql, $values);

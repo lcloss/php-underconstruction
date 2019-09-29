@@ -8,6 +8,10 @@ return function (App $app) {
     $container = $app->getContainer();
 
     // Front Controller
+    /*
+    $app->get('/', 'HomeController::index')->setname('home');
+    $app->post('/', 'HomeController::sentemail');
+    */
     $app->get('/', \HomeController::class . ':index')->setname('home');
     $app->post('/', \HomeController::class . ':sentemail');
     $app->get('/contacto', \HomeController::class . ':contact')->setname('contacto');
