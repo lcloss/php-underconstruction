@@ -1,6 +1,3 @@
-# App files created with artesao
-/app/Db/*
-/app/Models/*
 # Vendor files. Install with: $ composer update
 /vendor
 # Distribution files. These files are created on $ composer update
