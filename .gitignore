@@ -2,6 +2,7 @@
 /vendor
 # Distribution files. These files are created on $ composer update
 /public/dist
+/public/images/background.jpg
 # Temporary files - where cache files are
 /temp
 # Log files
