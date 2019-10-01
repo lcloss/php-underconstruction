@@ -20,6 +20,7 @@ switch( $argv[1] ) {
             'seed:table <table>',
             'drop:table <table>',
             'remove:table <table>',
+            'update:table <table>',
             'update:domain <domain> <user> <dbname> <dbpassw>',
         );
     
@@ -74,7 +75,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new \App\MakeTable($c->db, $argv[2]);
         $table->create();
-        echo "Tabela criada. Altere e execute make:table " . $argv[2];
+        echo "Tabela criada. Altere e execute make:table " . $argv[2] . "\n\r";
         break;
 
     case 'make:table':
@@ -83,7 +84,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $table->make();
-        echo "Tabela criada na base de dados. Faça seed:table " . $argv[2] . " para criar os dados.";
+        echo "Tabela criada na base de dados. Faça seed:table " . $argv[2] . " para criar os dados.\n\r";
         break;
 
     case 'seed:table':
@@ -92,7 +93,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $n_rows = $table->seed();
-        echo "Tabela " . $argv[2] . " com " . $n_rows . " linhas adicionadas.";
+        echo "Tabela " . $argv[2] . " com " . $n_rows . " linhas adicionadas.\n\r";
         break;
 
     case 'drop:table':
@@ -101,7 +102,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $table->drop();
-        echo "Tabela " . $argv[2] . " eliminada.";
+        echo "Tabela " . $argv[2] . " eliminada.\n\r";
         break;
 
     case 'remove:table':
@@ -110,7 +111,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $table->remove();
-        echo "Tabela " . $argv[2] . " removida.";
+        echo "Tabela " . $argv[2] . " removida.\n\r";
         break;
 
     case 'update:table':
@@ -119,7 +120,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $table->update();
-        echo "Tabela " . $argv[2] . " atualizada.";
+        echo "Tabela " . $argv[2] . " atualizada.\n\r";
         break;
 
     case 'update:domain':

@@ -14,7 +14,7 @@ class HomeController extends Controller
         $this->setCsrf($request);
         $this->getMessages();
 
-        $this->data['google_recaptcha'] = getenv('GOOGLE_RECAPTCHA');
+        $this->data['google_recaptcha'] = getenv('GOOGLE_RECAPTCHA_KEY');
 
         $this->view->render($response, 'index.tpl.html', $this->data);
         return $response;
@@ -30,7 +30,12 @@ class HomeController extends Controller
         // Anti-spam!!!
         if ( !empty($post['email'])) {
             if ( !$tb_spammers->checkSpammer() ) {
-                $tb_spammers->addSpammer();
+                $spammer = array(
+                    'email1'    => $post['email'],
+                    'email2'    => $post['e_mail'],
+                    'points'    => 0.0 
+                );
+                $tb_spammers->addSpammer($spammer);
             }
 
             return $response->withRedirect('/');
@@ -38,6 +43,25 @@ class HomeController extends Controller
 
         // Check ip address
         if ( $tb_spammers->checkSpammer() ) {
+            return $response->withRedirect('/');
+        }
+
+        // Google reCaptcha
+        $secret = getenv('GOOGLE_RECAPTCHA_SECRET');
+        $captcha = $post['token'];
+        $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$captcha}");
+        $captcha_success = json_decode($verify);
+
+        if ( $captcha_success->success == false ) {
+            if ( !$tb_spammers->checkSpammer() ) {
+                $spammer = array(
+                    'email1'    => $post['email'],
+                    'email2'    => $post['e_mail'],
+                    'points'    => $captcha_success->score
+                );
+                $tb_spammers->addSpammer();
+            }
+
             return $response->withRedirect('/');
         }
 
@@ -129,7 +153,7 @@ EOT;
         $this->setCsrf($request);
         $this->getMessages();
 
-        $this->data['google_recaptcha'] = getenv('GOOGLE_RECAPTCHA');
+        $this->data['google_recaptcha'] = getenv('GOOGLE_RECAPTCHA_KEY');
 
         $this->view->render($response, 'contact.tpl.html', $this->data);
         return $response;
@@ -146,7 +170,12 @@ EOT;
         // Anti-spam!!!
         if ( !empty($post['email'])) {
             if ( !$tb_spammers->checkSpammer() ) {
-                $tb_spammers->addSpammer();
+                $spammer = array(
+                    'email1'    => $post['email'],
+                    'email2'    => $post['e_mail'],
+                    'points'    => 0.0 
+                );
+                $tb_spammers->addSpammer($spammer);
             }
 
             return $response->withRedirect('/');
@@ -154,6 +183,25 @@ EOT;
 
         // Check ip address
         if ( $tb_spammers->checkSpammer() ) {
+            return $response->withRedirect('/');
+        }
+
+        // Google reCaptcha
+        $secret = getenv('GOOGLE_RECAPTCHA_SECRET');
+        $captcha = $post['token'];
+        $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$captcha}");
+        $captcha_success = json_decode($verify);
+
+        if ( $captcha_success->success == false ) {
+            if ( !$tb_spammers->checkSpammer() ) {
+                $spammer = array(
+                    'email1'    => $post['email'],
+                    'email2'    => $post['e_mail'],
+                    'points'    => $captcha_success->score
+                );
+                $tb_spammers->addSpammer();
+            }
+
             return $response->withRedirect('/');
         }
 

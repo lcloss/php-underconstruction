@@ -13,12 +13,17 @@ class SpammersModel extends Model
         parent::__construct($db, $this->table, $flash);
     }
 
-    public function addSpammer() 
+    public function addSpammer($spammer)
     {
+        $this->setValues($spammer);
+
         $sql = $this->sql->insert(['sent_time', 'ip_address'])->get();
         $values = $this->sql->values([
             'sent_time'     => date("Y-m-d H:i:s"),
-            'ip_address'    => get_ip()
+            'ip_address'    => get_ip(),
+            'email1'        => $this->getemail1(),
+            'email2'        => $this->getemail2(),
+            'points'        => $this->getpoints()
         ]);
         
         $this->execute($sql, $values);

@@ -13,7 +13,7 @@ class NotifierListTable extends \App\MakeTable
             'id'            => 'INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY',
             'name'          => 'VARCHAR(50) NOT NULL',
             'email'         => 'VARCHAR(120) NOT NULL',
-            'sent_time'     => 'TIMESTAMP NOT NULL',
+            'sent_time'     => 'DATETIME NOT NULL',
             'ip_address'    => 'VARCHAR(32) NULL'
         ];
 

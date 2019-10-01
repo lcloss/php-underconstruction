@@ -64,7 +64,6 @@ EOT;
             $sql_columns .= "\t\t\t" . $column . "\t\t" . $prop;
         }
 
-        // $sql = str_replace('{% tablename %}', strtolower($this->table), $this->sql_create);
         $sql = str_replace('{% tablename %}', $this->table, $this->sql_create);
         $sql = str_replace('{% columns %}', $sql_columns, $sql);
 
@@ -74,7 +73,7 @@ EOT;
 
     public function drop() 
     {
-        $sql = str_replace('{% tablename %}', strtolower($this->table), $this->sql_drop);
+        $sql = str_replace('{% tablename %}', $this->table, $this->sql_drop);
         $this->db->execute($sql);
     }
 
@@ -104,7 +103,7 @@ EOT;
                 $parms[':' . $column] = $value;
             }
 
-            $sql = str_replace('{% tablename %}', strtolower($this->table), $this->sql_insert);
+            $sql = str_replace('{% tablename %}', $this->table, $this->sql_insert);
             $sql = str_replace('{% columns %}', $sql_columns, $sql);
             $sql = str_replace('{% values %}', $sql_values, $sql);
 
@@ -117,7 +116,7 @@ EOT;
     public function update()
     {
         // Get table columns
-        $sql = str_replace('{% tablename %}', strtolower($this->table), $this->sql_show_columns);
+        $sql = str_replace('{% tablename %}', $this->table, $this->sql_show_columns);
         $table_columns = $this->db->select($sql, array());
 
         // Get all columns names
