@@ -59,7 +59,7 @@ class HomeController extends Controller
                     'email2'    => $post['e_mail'],
                     'points'    => $captcha_success->score
                 );
-                $tb_spammers->addSpammer();
+                $tb_spammers->addSpammer($spammer);
             }
 
             return $response->withRedirect('/');
@@ -199,7 +199,7 @@ EOT;
                     'email2'    => $post['e_mail'],
                     'points'    => $captcha_success->score
                 );
-                $tb_spammers->addSpammer();
+                $tb_spammers->addSpammer($spammer);
             }
 
             return $response->withRedirect('/');

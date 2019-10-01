@@ -17,11 +17,12 @@
     </div>
     <div class="row">
         <div class="col">
-            <button type="submit" class="btn btn-primary">Quero saber</button>
+            <button type="submit" id="submitForm" class="btn btn-primary">Quero saber</button>
         </div>
     </div>
     <input type="hidden" id="{{ csrf_nameKey }}" name="{{ csrf_nameKey }}" value="{{ csrf_nameData }}">
     <input type="hidden" id="{{ csrf_valueKey }}" name="{{ csrf_valueKey }}" value="{{ csrf_valueData }}">
+    <input type="hidden" id="token" name="token" value="">
 </form>
 <br>
 <p>Caso queira enviar-nos uma mensagem, utilize o nosso formulário de <a href="/contacto">contato</a>.</p>
@@ -31,33 +32,16 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render={{ google_recaptcha }}"></script>
 <script type="text/javascript">
-$('#notifierForm').submit(function(e) {
+$('#submitForm').click(function(e) {
     // Stop
     e.preventDefault();
-    var email = $('#email').val();
-    var name = $('#name').val();
-    var e_mail = $('#e_mail').val();
-    var csrf_name = $('#csrf_name').val();
-    var csrf_value = $('#csrf_value').val();
 
     // Check if recaptcha is ready
     grecaptcha.ready(function() {
         // Do the request
         grecaptcha.execute('{{ google_recaptcha }}', {action: 'notifiers'}).then(function(token) {
-            $.ajax({
-                url: "/",
-                type: "POST",
-                data: {"email": email, "name": name, "e_mail": e_mail, "token": token, "csrf_name": csrf_name, "csrf_value": csrf_value},
-                //contentType : 'application/json',
-                contentType: "application/x-www-form-urlencoded",
-                success: function(data, textStatus, jqXHR) {
-                   // console.log('Sent: ' + data + ', Status: ' + textStatus + ', jqXHR: ' + jqXHR);
-                   $('html').html( data );
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('Failed: ' + errorThrown);
-                }
-            });
+            $('#token').val(token);
+            $('#notifierForm').submit();
         });
     });
 });
