@@ -23,7 +23,7 @@ class ContactsModel extends Model
         $sql = $this->sql->insert(['name', 'email', 'subject', 'message', 'sent_time', 'ip_address'])->get();
         $values = $this->sql->values([
             'name'          => $this->getname(),
-            'email'         => $this->getemail(),
+            'email'         => $this->gete_mail(),
             'subject'       => $this->getsubject(),
             'message'       => $this->getmessage(),
             'sent_time'     => $this->getsent_time(),

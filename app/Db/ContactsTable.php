@@ -15,7 +15,7 @@ class ContactsTable extends \App\MakeTable
             'email'         => 'VARCHAR(120) NOT NULL',
             'subject'       => 'VARCHAR(50) NOT NULL',
             'message'       => 'TEXT NOT NULL',
-            'sent_time'     => 'TIMESTAMP NOT NULL',
+            'sent_time'     => 'DATETIME NOT NULL',
             'ip_address'    => 'VARCHAR(32) NULL'
         ];
 

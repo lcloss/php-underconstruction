@@ -6,29 +6,30 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Nome:</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" name="name" placeholder="Indique o seu nome" value="" />
+            <input type="text" class="form-control" id="name" name="name" required placeholder="Indique o seu nome" value="" />
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Email:</label>
         <div class="col-sm-10">
-            <input type="email" class="form-control" id="e_mail" name="e_mail" placeholder="Indique o seu email" value="" />
+            <input type="email" class="form-control" id="e_mail" name="e_mail" required placeholder="Indique o seu email" value="" />
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Assunto:</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="subject" name="subject" placeholder="Indique o assunto da sua mensagem" value="" />
+            <input type="text" class="form-control" id="subject" name="subject" required placeholder="Indique o assunto da sua mensagem" value="" />
         </div>
     </div>
     <div class="form-group">
         <label>Mensagem:</label>
-        <textarea class="form-control" rows="3" cols="80" id="message" name="message" placeholder="Escreva aqui a sua mensagem"></textarea>
+        <textarea class="form-control" rows="3" cols="80" id="message" name="message" required placeholder="Escreva aqui a sua mensagem"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Enviar</button>
+    <button type="submit" id="submitForm" class="btn btn-primary">Enviar</button>
     <a href="/"><button type="button" class="btn btn-success">Voltar</button></a>
     <input type="hidden" id="{{ csrf_nameKey }}" name="{{ csrf_nameKey }}" value="{{ csrf_nameData }}">
     <input type="hidden" id="{{ csrf_valueKey }}" name="{{ csrf_valueKey }}" value="{{ csrf_valueData }}">
+    <input type="hidden" id="token" name="token" value="">
 </form>
 {% endblock %}
 
@@ -36,35 +37,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js?render={{ google_recaptcha }}"></script>
 <script>
-$('#contactForm').submit(function(e) {
+$('#submitForm').click(function(e) {
     // Stop
     e.preventDefault();
-    var email = $('#email').val();
-    var name = $('#name').val();
-    var e_mail = $('#e_mail').val();
-    var subject = $('#subject').val();
-    var message = $('#message').val();
-    var csrf_name = $('#csrf_name').val();
-    var csrf_value = $('#csrf_value').val();
 
     // Check if recaptcha is ready
     grecaptcha.ready(function() {
         // Do the request
-        grecaptcha.execute('{{ google_recaptcha }}', {action: 'notifiers'}).then(function(token) {
-            $.ajax({
-                url: "/contacto",
-                type: "POST",
-                data: {"email": email, "name": name, "e_mail": e_mail, "subject": subject, "message": message, "token": token, "csrf_name": csrf_name, "csrf_value": csrf_value},
-                //contentType : 'application/json',
-                contentType: "application/x-www-form-urlencoded",
-                success: function(data, textStatus, jqXHR) {
-                   // console.log('Sent: ' + data + ', Status: ' + textStatus + ', jqXHR: ' + jqXHR);
-                   $('html').html( data );
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('Failed: ' + errorThrown);
-                }
-            });
+        grecaptcha.execute('{{ google_recaptcha }}', {action: 'contact'}).then(function(token) {
+            $('#token').val(token);
+            $('#contactForm').submit();
         });
     });
 });

@@ -55,7 +55,7 @@ class NotifierListModel extends Model
             $sql = $this->sql->insert(['name', 'email', 'sent_time', 'ip_address'])->get();
             $values = $this->sql->values([
                 'name'          => $this->getname(),
-                'email'         => $this->getemail(),
+                'email'         => $this->gete_mail(),
                 'sent_time'     => $this->getsent_time(),
                 'ip_address'    => $this->getip_address()
             ]);

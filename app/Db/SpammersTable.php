@@ -11,8 +11,11 @@ class SpammersTable extends \App\MakeTable
 
         $this->columns = [
             'id'            => 'INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY',
-            'sent_time'     => 'TIMESTAMP NOT NULL',
-            'ip_address'    => 'VARCHAR(10) NULL'
+            'email1'        => 'VARCHAR(120) NULL',
+            'email2'        => 'VARCHAR(120) NULL',
+            'points'        => 'DECIMAL(3,2) NULL',
+            'sent_time'     => 'DATETIME NOT NULL',
+            'ip_address'    => 'VARCHAR(32) NULL'
         ];
 
         $this->seed = [
