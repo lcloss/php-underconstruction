@@ -14,16 +14,13 @@
       <!-- Estilos -->
       <link rel="stylesheet" href="css/estilos.css">
       <style>
-      body {
-        height: 100%
-      }
       </style>
   </head>
   <body>
-    <div class="jumbotron vertical-center">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
+    <div class="container-fluid full-height w-100 m-0 p-0">
+        <div class="row h-100 p-0">
+          <div class="col-md-6 color-gray">
+              <div class="main-box">
             <h1>Estamos Construindo<br>um Novo Site</h1>
             <br>
             {% if errors %}
@@ -41,12 +38,11 @@
             </div>
             {% endif %}
             {% block body %}{% endblock %}
+            </div>
           </div>
-          <div class="col-md-6">
-            <img src="images/1200.png" class="img-fluid">
+          <div class="col-md-6 img-box">&nbsp;
           </div>
         </div>
-      </div>
     </div>
     {% block scripts %}{% endblock %}
   </body> 

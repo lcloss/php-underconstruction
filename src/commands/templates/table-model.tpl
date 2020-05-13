@@ -8,8 +8,8 @@ class {% tablename %}Model extends Model
 {
     protected $table = '{% tablename %}';
 
-    public function __construct($db)
+    public function __construct($db, $flash)
     {
-        parent::__construct($db, $this->table);
+        parent::__construct($db, $this->table, $flash);
     }
 }

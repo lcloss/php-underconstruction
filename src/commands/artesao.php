@@ -1,6 +1,7 @@
 <?php
 if ( count($argv) < 2 ) {
-    echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao <comando> [<parametros>] \n\r";
+    echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao <comando> [<parametros>] \n\r\n\r";
+    echo "Para uma lista dos comandos, digite: \n\r\n\r$ php artesao list\n\r";
     exit(0);
 }
 
@@ -12,13 +13,15 @@ switch( $argv[1] ) {
         $available_cmds = array(
             'list',
             'create:controller <controller>',
-            'drop:controller <controller>',
+            'delete:controller <controller>',
             'create:middleware <middleware>',
             'create:table <table>',
             'make:table <table>',
             'seed:table <table>',
             'drop:table <table>',
-            'remove:table <table>'
+            'remove:table <table>',
+            'update:table <table>',
+            'update:domain <domain> <user> <dbname> <dbpassw>',
         );
     
         echo "Lista de comandos disponíveis:\n\r\n\r";
@@ -28,7 +31,7 @@ switch( $argv[1] ) {
         break;
 
     case 'create:controller':
-        if ( count($argv) < 3 ) {
+        if ( count($argv) != 3 ) {
             echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao " . $argv[1] . " <controller> \n\r";
             exit(0);
         }
@@ -36,10 +39,12 @@ switch( $argv[1] ) {
         echo "A criar o controller " . $argv[2] . "\n\r";
         $controller = new \App\MakeController($argv[2]);
         $controller->create();
-        echo "Controller " . $argv[2] . " criado. Crie agora os templates em app/Views/" . strtolower($argv[2]) . "/\n\r";
+        echo "Controller " . $argv[2] . " criado.\n\r\n\r";
+        echo "Crie agora os templates em app/Views/" . strtolower($argv[2]) . "/\n\r";
+        echo "Crie também uma entrada em src/config/routes.php\n\r";
         break;
 
-    case 'drop:controller':
+    case 'delete:controller':
         if ( count($argv) < 3 ) {
             echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao " . $argv[1] . " <controller> \n\r";
             exit(0);
@@ -70,7 +75,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new \App\MakeTable($c->db, $argv[2]);
         $table->create();
-        echo "Tabela criada. Altere e execute make:table " . $argv[2];
+        echo "Tabela criada. Altere e execute make:table " . $argv[2] . "\n\r";
         break;
 
     case 'make:table':
@@ -79,7 +84,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $table->make();
-        echo "Tabela criada na base de dados. Faça seed:table " . $argv[2] . " para criar os dados.";
+        echo "Tabela criada na base de dados. Faça seed:table " . $argv[2] . " para criar os dados.\n\r";
         break;
 
     case 'seed:table':
@@ -88,7 +93,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $n_rows = $table->seed();
-        echo "Tabela " . $argv[2] . " com " . $n_rows . " linhas adicionadas.";
+        echo "Tabela " . $argv[2] . " com " . $n_rows . " linhas adicionadas.\n\r";
         break;
 
     case 'drop:table':
@@ -97,7 +102,7 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $table->drop();
-        echo "Tabela " . $argv[2] . " eliminada.";
+        echo "Tabela " . $argv[2] . " eliminada.\n\r";
         break;
 
     case 'remove:table':
@@ -106,7 +111,28 @@ switch( $argv[1] ) {
         $c = $app->getContainer();
         $table = new $classname($c->db);
         $table->remove();
-        echo "Tabela " . $argv[2] . " removida.";
+        echo "Tabela " . $argv[2] . " removida.\n\r";
+        break;
+
+    case 'update:table':
+        echo "A alterar a tabela " . $argv[2] . " do sistema.\n\r";
+        $classname = '\\App\\Db\\' . $argv[2] . 'Table';
+        $c = $app->getContainer();
+        $table = new $classname($c->db);
+        $table->update();
+        echo "Tabela " . $argv[2] . " atualizada.\n\r";
+        break;
+
+    case 'update:domain':
+        if ( count($argv) != 9 ) {
+            echo "Erro de sintaxe. Por favor informe:\n\r\n\r$ php artesao " . $argv[1] . " <domain> <user> <email> <password> <dbname> <dbuser> <dbpasswd>\n\r";
+            exit(0);
+        }
+        $domain = new \App\UpdateEnv($argv[2], $argv[3], $argv[4], $argv[5], $argv[6], $argv[7], $argv[8]); 
+        $domain->updateDomain($argv[2], true);
+        $domain->update();
+        echo "Domínio " . $argv[2] . " atualizado.\n\r\n\r";
+        echo "Verifique agora o ficheiro .env\n\r";
         break;
 
     default:

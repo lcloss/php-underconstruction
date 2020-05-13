@@ -41,18 +41,25 @@ class NotifierListModel extends Model
             return false;
         }
     }
-    public function addNotifier($email)
+
+    public function addNotifier($notifier)
     {
-        if ( $this->checkEmail($email) ) {
+        $notifier['sent_time']  = date("Y-m-d H:i:s");
+        $notifier['ip_address'] = get_ip();
+
+        $this->setValues($notifier);
+
+        if ( $this->checkEmail( $this->getemail() ) ) {
             $this->flash->addMessageNow('error', 'Email já cadastrado.');
         } else {
-            $this->setemail($email);
-
-            $sql = $this->sql->insert(['email'])->get();
+            $sql = $this->sql->insert(['name', 'email', 'sent_time', 'ip_address'])->get();
             $values = $this->sql->values([
-                'email' => $this->getemail()
+                'name'          => $this->getname(),
+                'email'         => $this->gete_mail(),
+                'sent_time'     => $this->getsent_time(),
+                'ip_address'    => $this->getip_address()
             ]);
-            
+
             $this->execute($sql, $values);
                   
             $this->flash->addMessageNow('success', 'Email adicionado à lista');

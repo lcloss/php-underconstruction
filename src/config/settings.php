@@ -1,7 +1,7 @@
 <?php
 
 // See: https://github.com/vlucas/phpdotenv
-$dotenv = Dotenv\Dotenv::create(__DIR__ . '\\..\\..\\');
+$dotenv = Dotenv\Dotenv::create(__DIR__ . '/../../');
 $dotenv->load();
 
 $e_displayErrors = getenv('DISPLAY_ERRORS', false);

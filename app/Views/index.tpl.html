@@ -1,20 +1,97 @@
-{% extends "templates/app.tpl.html" %}
+{% extends "templates/app-full.tpl.html" %}
+
+
 
 {% block body %}
+
 <p>Entretanto, você poderá saber antecipadamente quando o site estará no ar.<br>
+
     Basta deixar o seu email que nós iremos lhe avisar.</p>
-<form class="form-row" method="POST" action="/">
-    <div class="col-9">
-    <div class="form-group">
-        <input class="form-control" type="email" name="email" id="email" placeholder="Endereço de email" />
+
+<form id="notifierForm" method="POST" action="/">
+
+    <input class="form-control" type="email" name="email" id="email" placeholder="Endereço de email" />
+
+    <div class="row">
+
+        <div class="col-9">
+
+            <div class="form-group">
+
+                <input class="form-control" type="text" name="name" id="name" required placeholder="Nome" />
+
+            </div>
+
+            <div class="form-group">
+
+                <input class="form-control" type="email" name="e_mail" id="e_mail" required placeholder="Endereço de email" />
+
+            </div>
+
+        </div>
+
     </div>
+
+    <div class="row">
+
+        <div class="col">
+
+            <button type="submit" id="submitForm" class="btn btn-primary">Quero saber</button>
+
+        </div>
+
     </div>
-    <div class="col">
-    <button type="submit" class="btn btn-primary">Quero saber</button>
-    </div>
-    <input type="hidden" name="{{ csrf_nameKey }}" value="{{ csrf_nameData }}">
-    <input type="hidden" name="{{ csrf_valueKey }}" value="{{ csrf_valueData }}">
+
+    <input type="hidden" id="{{ csrf_nameKey }}" name="{{ csrf_nameKey }}" value="{{ csrf_nameData }}">
+
+    <input type="hidden" id="{{ csrf_valueKey }}" name="{{ csrf_valueKey }}" value="{{ csrf_valueData }}">
+
+    <input type="hidden" id="token" name="token" value="">
+
 </form>
+
 <br>
+
 <p>Caso queira enviar-nos uma mensagem, utilize o nosso formulário de <a href="/contacto">contato</a>.</p>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render={{ google_recaptcha }}"></script>
+
+<script type="text/javascript">
+
+$('#submitForm').click(function(e) {
+
+    // Stop
+
+    e.preventDefault();
+
+
+
+    // Check if recaptcha is ready
+
+    grecaptcha.ready(function() {
+
+        // Do the request
+
+        grecaptcha.execute('{{ google_recaptcha }}', {action: 'notifiers'}).then(function(token) {
+
+            $('#token').val(token);
+
+            $('#notifierForm').submit();
+
+        });
+
+    });
+
+});
+
+</script>
+
 {% endblock %}

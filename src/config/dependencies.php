@@ -8,7 +8,7 @@ return function (App $app) {
 
     // Twig Viewer
     $container['view'] = function ($c) {
-        $view = new \Slim\Views\Twig('../app/views', [
+        $view = new \Slim\Views\Twig('../app/Views', [
             // 'cache' => '../temp/cache'
             'cache' => false,
             'debug' => true,
@@ -36,7 +36,7 @@ return function (App $app) {
     $container['db'] = function ($c) {
         $config = $c['settings']['db'];
         try {
-            $pdo = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['pass']);
+            $pdo = new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['pass']);
         } catch (\PDOException $e) {
             throw new \Exception($e->getMessage());
         }
